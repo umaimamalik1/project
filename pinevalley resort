@@ -1,0 +1,218 @@
+index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pine Valley Resort</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        h2 {
+            color: #2c3e50;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            margin: 20px auto;
+            width: 50%;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        input, select, button {
+            display: block;
+            width: 80%;
+            padding: 8px;
+            margin: 10px auto;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        p {
+            font-weight: bold;
+            color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Pine Valley Resort Booking & Billing System</h2>
+
+    <!-- Room Booking -->
+    <div class="container">
+        <h3>Room Booking System</h3>
+        <label>Enter number of nights:</label>
+        <input type="number" id="nights" placeholder="Enter nights">
+
+        <label>Select Room Type:</label>
+        <select id="roomType">
+            <option value="standard">Standard ($100/night)</option>
+            <option value="deluxe">Deluxe ($150/night)</option>
+            <option value="suite">Suite ($200/night)</option>
+        </select>
+
+        <label>Have a discount code?</label>
+        <input type="text" id="discountCode" placeholder="Enter code">
+
+        <button onclick="calculateBooking()">Calculate Booking Cost</button>
+        <p id="bookingResult"></p>
+    </div>
+
+    <!-- Meal Ordering -->
+    <div class="container">
+        <h3>Meal Ordering System</h3>
+        <label>Select Meal Type:</label>
+        <select id="mealType">
+            <option value="breakfast">Breakfast ($20)</option>
+            <option value="lunch">Lunch ($30)</option>
+            <option value="dinner">Dinner ($40)</option>
+        </select>
+
+        <label>Enter Quantity:</label>
+        <input type="number" id="mealQuantity" placeholder="Enter quantity">
+
+        <button onclick="calculateMealCost()">Calculate Meal Cost</button>
+        <p id="mealResult"></p>
+    </div>
+
+    <!-- Customer Billing -->
+    <div class="container">
+        <h3>Customer Billing System</h3>
+        <label>Enter Room Charges:</label>
+        <input type="number" id="roomCharges" placeholder="Enter amount">
+
+        <label>Enter Meal Charges:</label>
+        <input type="number" id="mealCharges" placeholder="Enter amount">
+
+        <label>Did you use spa services? ($50 extra)</label>
+        <input type="checkbox" id="spaService">
+
+        <button onclick="calculateBill()">Calculate Final Bill</button>
+        <p id="billResult"></p>
+    </div>
+
+    <!-- Employee Salary Calculator -->
+    <div class="container">
+        <h3>Employee Salary Calculator</h3>
+        <label>Select Job Role:</label>
+        <select id="jobRole">
+            <option value="receptionist">Receptionist</option>
+            <option value="chef">Chef</option>
+            <option value="manager">Manager</option>
+        </select>
+
+        <label>Enter Years of Experience:</label>
+        <input type="number" id="experience" placeholder="Enter experience">
+
+        <button onclick="calculateSalary()">Calculate Salary</button>
+        <p id="salaryResult"></p>
+    </div>
+
+    <!-- Customer Feedback -->
+    <div class="container">
+        <h3>Customer Feedback System</h3>
+        <label>Enter Your Feedback:</label>
+        <input type="text" id="feedback" placeholder="Enter feedback">
+
+        <button onclick="processFeedback()">Process Feedback</button>
+        <p id="feedbackResult"></p>
+    </div>
+
+    <script>
+        function calculateBooking() {
+            let nights = document.getElementById("nights").value;
+            let roomType = document.getElementById("roomType").value;
+            let discountCode = document.getElementById("discountCode").value;
+            
+            let rates = { standard: 100, deluxe: 150, suite: 200 };
+            let totalCost = nights * rates[roomType];
+
+            if (discountCode === "PINE10") {
+                totalCost *= 0.9; // Apply 10% discount
+            }
+
+            document.getElementById("bookingResult").innerText = `Total Booking Cost: $${totalCost.toFixed(2)}`;
+        }
+
+        function calculateMealCost() {
+            let mealType = document.getElementById("mealType").value;
+            let quantity = document.getElementById("mealQuantity").value;
+
+            let prices = { breakfast: 20, lunch: 30, dinner: 40 };
+            let totalCost = quantity * prices[mealType];
+
+            document.getElementById("mealResult").innerText = `Total Meal Cost: $${totalCost}`;
+        }
+
+        function calculateBill() {
+            let roomCharges = parseFloat(document.getElementById("roomCharges").value);
+            let mealCharges = parseFloat(document.getElementById("mealCharges").value);
+            let spaService = document.getElementById("spaService").checked;
+            
+            let totalBill = roomCharges + mealCharges;
+            if (spaService) totalBill += 50;
+
+            totalBill *= 1.05; // 5% service charge
+
+            document.getElementById("billResult").innerText = `Final Bill: $${totalBill.toFixed(2)}`;
+        }
+
+        function calculateSalary() {
+            let jobRole = document.getElementById("jobRole").value;
+            let experience = parseInt(document.getElementById("experience").value);
+
+            let baseSalary = { receptionist: 2000, chef: 2500, manager: 3000 };
+            let experienceBonus = { receptionist: 100, chef: 150, manager: 200 };
+
+            let totalSalary = baseSalary[jobRole] + (experience * experienceBonus[jobRole]);
+            if (experience > 5) totalSalary += 500; // Additional bonus
+
+            document.getElementById("salaryResult").innerText = `Total Salary: $${totalSalary}`;
+        }
+
+        function processFeedback() {
+            let feedback = document.getElementById("feedback").value;
+            let upperCase = feedback.toUpperCase();
+            let lowerCase = feedback.toLowerCase();
+            let formatted = feedback.replace(/ /g, "-");
+            let firstFiveWords = feedback.split(" ").slice(0, 5).join(" ");
+
+            document.getElementById("feedbackResult").innerText = `Formatted: ${formatted} | First 5 words: ${firstFiveWords}`;
+        }
+    </script>
+
+</body>
+</html>
+script.js
+function calculateBooking() {
+    let nights = document.getElementById("nights").value;
+    let roomType = document.getElementById("roomType").value;
+    let discountCode = document.getElementById("discountCode").value;
+    
+    let rates = {
+        standard: 100,
+        deluxe: 150,
+        suite: 200
+    };
+
+    let totalCost = nights * rates[roomType];
+
+    if (discountCode === "PINE10") {
+        totalCost *= 0.9; // Apply 10% discount
+    }
+
+    document.getElementById("result").innerText = `Total Booking Cost: $${totalCost.toFixed(2)}`;
+}
+
